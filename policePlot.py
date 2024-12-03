@@ -1,5 +1,5 @@
 # plot police_district_frequency(df) into a bar graph
-
+import pandas as pd
 import matplotlib.pyplot as plt
 from crime_correlations import police_district_frequency
 

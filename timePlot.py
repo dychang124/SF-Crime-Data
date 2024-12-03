@@ -1,5 +1,5 @@
 # plot bar graph by time_frequency(df)
-
+import pandas as pd
 import matplotlib.pyplot as plt
 from crime_correlations import time_frequency
 

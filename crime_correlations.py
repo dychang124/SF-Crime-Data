@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import statistics
+import matplotlib.pyplot as plt
 
 filepath = 'criminal.csv'
 df = pd.read_csv(filepath)
@@ -74,6 +75,52 @@ def police_district_frequency(data) :
             districts[district] += 1
     return districts
 
+def larceny_subcategory_count(data):
+    subcategory_counts = {}
+
+    for _, row in data.iterrows():
+        if not pd.isnull(row["Incident Category"]) and row["Incident Category"] == "Larceny Theft":
+            subcategory = row["Incident Subcategory"]
+            
+            if pd.isnull(subcategory):
+                subcategory = "Unknown"  
+
+            if subcategory in subcategory_counts:
+                subcategory_counts[subcategory] += 1
+            else:
+                subcategory_counts[subcategory] = 1
+
+    return subcategory_counts
+
+def plot_larceny_subcategories(subcategory_counts):
+    labels = list(subcategory_counts.keys())
+    values = list(subcategory_counts.values())
+
+    # Calculate percentages for the legend
+    total = sum(values)
+    percentages = [f"{(value / total) * 100:.1f}%" for value in values]
+
+    # Plot the pie chart
+    plt.figure(figsize=(10, 8))
+    wedges, _ = plt.pie(
+        values,
+        labels=None,  # No labels directly on the pie
+        startangle=90,
+        wedgeprops={'linewidth': 0.5, 'edgecolor': 'white'}  # Separate slices
+    )
+    plt.title("Distribution of Larceny Theft Subcategories", fontsize=14)
+    plt.axis('equal')  # Equal aspect ratio ensures the pie chart is circular
+
+    # Add a legend with labels and percentages
+    plt.legend(
+        loc="center left",
+        bbox_to_anchor=(1, 0.5),
+        labels=[f"{label}: {value} ({percentage})" for label, value, percentage in zip(labels, values, percentages)],
+        fontsize=10
+    )
+
+    plt.tight_layout()
+    plt.show()
 
 
 time_frequencies = time_frequency(df)
@@ -84,3 +131,8 @@ print(day_frequencies)
 
 district_frequencies = police_district_frequency(df)
 print(district_frequencies)
+
+subcategories = larceny_subcategory_count(df)
+print(subcategories)
+
+plot_larceny_subcategories(subcategories)

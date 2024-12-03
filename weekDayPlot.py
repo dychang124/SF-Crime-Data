@@ -1,5 +1,5 @@
 # plot day_of_week_frequency(df) into a bar graph
-
+import pandas as pd
 import matplotlib.pyplot as plt
 from crime_correlations import day_of_week_frequency
 
